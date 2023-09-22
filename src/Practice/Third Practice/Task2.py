@@ -17,6 +17,8 @@ def check(my_digit, digit):
         if int(digit[i]) == my_digit[i]:
             bulls += 1
     return cows - bulls, bulls
+
+
 def game():
     my_digit = random.sample(range(10), 4)
     print(my_digit)

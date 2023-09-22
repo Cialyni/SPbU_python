@@ -13,6 +13,7 @@ def fraction_normalization(fraction):
     fraction[2] //= tmp
     return fraction
 
+
 def fraction_check(fraction):
     if fraction[1] >= fraction[2]:
         return False
@@ -40,4 +41,3 @@ if __name__ == '__main__':
     for i in ans:
         fraction_output(i)
     print('This is the end of program')
- 
