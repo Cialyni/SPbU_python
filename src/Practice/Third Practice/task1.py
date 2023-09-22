@@ -40,3 +40,4 @@ if __name__ == '__main__':
     for i in ans:
         fraction_output(i)
     print('This is the end of program')
+ 
