@@ -7,7 +7,7 @@ def hello_func():
     return n
 
 
-def fraction_normalization(fraction):
+def fraction_normalization(fraction): 
     tmp = math.gcd(fraction[1], fraction[2])
     fraction[1] //= tmp
     fraction[2] //= tmp
