@@ -2,7 +2,9 @@ import math
 
 
 def hello_func():
-    print('Hi! Input N and i write all not contractible fraction with denominator from 1 to N sorted by increasing')
+    print(
+        "Hi! Input N and i write all not contractible fraction with denominator from 1 to N sorted by increasing"
+    )
     n = int(input())
     return n
 
@@ -21,7 +23,8 @@ def fraction_check(fraction):
 
 
 def fraction_output(fraction):
-    print(fraction[1], '/', fraction[2], sep = '')
+    print(fraction[1], "/", fraction[2], sep="")
+
 
 def main_logic(n):
     ans = []
@@ -34,10 +37,10 @@ def main_logic(n):
     return ans
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     n = hello_func()
     ans = main_logic(n)
     ans = sorted(ans)
     for i in ans:
         fraction_output(i)
-    print('This is the end of program')
+    print("This is the end of program")
