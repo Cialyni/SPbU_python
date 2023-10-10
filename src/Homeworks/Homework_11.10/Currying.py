@@ -4,14 +4,16 @@ from functools import partial, wraps, reduce
 
 def error_info():
     print(
-        "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity of the arity")
+        "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity of "
+        "the arity"
+    )
     sys.exit()
 
 
 def test_func(*args):
     for i in args:
-        print(i, end=' ')
-    print('\n')
+        print(i, end=" ")
+    print("\n")
 
 
 def curry_explicit(function, arity):
@@ -21,8 +23,7 @@ def curry_explicit(function, arity):
     def curried(*args):
         if len(args) == arity:
             return function(*args)
-        return (lambda *args2:
-                curried(*(args + args2)))
+        return lambda *args2: curried(*(args + args2))
 
     return curried
 
@@ -37,9 +38,8 @@ def uncurry_explicit(function, arity):
     return _
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     f1 = curry_explicit(test_func, 3)
     f1(1)(10)(-1)  # -> 1 10 -1
     f1 = uncurry_explicit(f1, 3)
     f1(4, 5, 0)  # -> 4 5 0
-
