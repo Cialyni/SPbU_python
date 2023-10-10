@@ -9,7 +9,9 @@ def hello_func():
     return n
 
 
-def fraction_normalization(fraction):
+def fraction_normalization(
+    fraction,
+):  # Fraction -is an object consisting of a quotient of a divisor and a denominator, a divisor and a denominator
     tmp = math.gcd(fraction[1], fraction[2])
     fraction[1] //= tmp
     fraction[2] //= tmp
