@@ -14,10 +14,13 @@ def input_digit(attempt):
     print("This is your attempt №:", attempt)
     print("Input your four-digit number:")
     digit = input()
+    while not digit.isdigit():
+        print("Input your four-digit number:")
+        digit = input()
     return digit
 
 
-def check(my_digit, digit):
+def bull_and_cows_find(my_digit, digit):
     cows = bulls = 0
     for i, elem in enumerate(digit):
         if int(elem) in my_digit:
@@ -28,11 +31,12 @@ def check(my_digit, digit):
 
 
 def game():
-    my_digit = random.sample(range(10), 4)
+    digit_count = 4
+    my_digit = random.sample(range(10), digit_count)
     attempt = 1
     while attempt <= 5:
         digit = input_digit(attempt)
-        cows, bulls = check(my_digit, digit)
+        cows, bulls = bull_and_cows_find(my_digit, digit)
         if bulls != 4:
             print("Cows count: {}\nBulls count: {}".format(cows, bulls))
         else:
