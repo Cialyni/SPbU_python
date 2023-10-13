@@ -7,7 +7,6 @@ def error_info():
         "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity of "
         "the arity"
     )
-    sys.exit()
 
 
 def test_func(*args):
@@ -19,7 +18,9 @@ def test_func(*args):
 def curry_explicit(function, arity):
     if arity < 0:
         error_info()
+        return
 
+    @wraps(function)
     def curried(*args):
         if len(args) == arity:
             return function(*args)
@@ -33,6 +34,7 @@ def uncurry_explicit(function, arity):
     def _(*args):
         if len(args) != arity:
             error_info()
+            return
         return reduce(lambda x, y: x(y), args, function)
 
     return _
@@ -40,6 +42,6 @@ def uncurry_explicit(function, arity):
 
 if __name__ == "__main__":
     f1 = curry_explicit(test_func, 3)
-    f1(1)(10)(-1)  # -> 1 10 -1
+    f1(1)(0)(-1)  # -> 1 10 -1
     f1 = uncurry_explicit(f1, 3)
     f1(4, 5, 0)  # -> 4 5 0
