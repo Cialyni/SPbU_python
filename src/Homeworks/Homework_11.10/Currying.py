@@ -2,13 +2,6 @@ import sys
 from functools import partial, wraps, reduce
 
 
-def error_info():
-    raise ValueError(
-        "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity of "
-        "the arity"
-    )
-
-
 def test_func(*args):
     for i in args:
         print(i, end=" ")
@@ -17,8 +10,11 @@ def test_func(*args):
 
 def curry_explicit(function, arity):
     if arity < 0:
-        error_info()
-        return
+        raise ValueError(
+            "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity "
+            "of"
+            "the arity"
+        )
 
     @wraps(function)
     def curried(*args):
@@ -33,7 +29,11 @@ def uncurry_explicit(function, arity):
     @wraps(function)
     def _(*args):
         if len(args) != arity:
-            error_info()
+            raise ValueError(
+                "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the "
+                "validity of"
+                "the arity"
+            )
             return
         return reduce(lambda x, y: x(y), args, function)
 
