@@ -34,7 +34,6 @@ def uncurry_explicit(function, arity):
                 "validity of"
                 "the arity"
             )
-            return
         return reduce(lambda x, y: x(y), args, function)
 
     return _
