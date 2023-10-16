@@ -3,7 +3,7 @@ from functools import partial, wraps, reduce
 
 
 def error_info():
-    print(
+    raise ValueError(
         "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity of "
         "the arity"
     )
