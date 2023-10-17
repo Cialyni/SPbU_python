@@ -9,40 +9,33 @@ def hello_func():
     return n
 
 
-def fraction_normalization(
-    fraction,
-):  # Fraction -is an object consisting of a quotient of a divisor and a denominator, a divisor and a denominator
-    tmp = math.gcd(fraction[1], fraction[2])
-    fraction[1] //= tmp
-    fraction[2] //= tmp
-    return fraction
+def fraction_normalization(numerator, denominator):
+    gcd = math.gcd(numerator, denominator)
+    return numerator // gcd, denominator // gcd
 
 
-def fraction_check(fraction):
-    if fraction[1] >= fraction[2]:
-        return False
-    return True
-
-
-def fraction_output(fraction):
-    print(fraction[1], "/", fraction[2], sep="")
-
-
-def main_logic(n):
-    ans = []
-    for numerator in range(1, n + 1):
-        for denominator in range(1, n + 1):
-            fraction = [numerator / denominator, numerator, denominator]
-            fraction_normalization(fraction)
-            if fraction_check(fraction) and not (fraction in ans):
-                ans.append(fraction)
+def all_fraction_find(n):
+    ans = set()
+    for denominator in range(1, n + 1):
+        for numerator in range(1, denominator + 1):
+            fraction = fraction_normalization(numerator, denominator)
+            if not (fraction in ans):
+                ans.add(fraction)
     return ans
+
+
+def answer_output(ans):
+    output = ""
+    for i in ans:
+        output += str(i[0]) + "/" + str(i[1]) + "\n"
+    return output
 
 
 if __name__ == "__main__":
     n = hello_func()
-    ans = main_logic(n)
-    ans = sorted(ans)
-    for i in ans:
-        fraction_output(i)
+    ans = all_fraction_find(n)
+    ans = sorted(
+        ans, key=lambda fraction: fraction[0] / fraction[1]
+    )  # fraction = [numerator, denominator]
+    print(answer_output(ans))
     print("This is the end of program")
