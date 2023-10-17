@@ -11,7 +11,7 @@ def test_func(*args):
 def curry_explicit(function, arity):
     if arity < 0:
         raise ValueError(
-            "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity "  
+            "ERROR!\ncheck the number of arguments that you specify and send to the function, as well as the validity "
             "of the arity"
         )
 
@@ -19,7 +19,7 @@ def curry_explicit(function, arity):
     def curried(*args):
         if len(args) == arity:
             return function(*args)
-        return lambda args2: curried(*(args + (args2, )))
+        return lambda args2: curried(*(args + (args2,)))
 
     return curried
 
