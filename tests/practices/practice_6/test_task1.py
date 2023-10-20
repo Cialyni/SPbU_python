@@ -1,11 +1,20 @@
 import pytest
-from src.practices.practice_6.task1 import quadratic_equation_solve, linear_equation_solve, is_float_numbers
+from src.practices.practice_6.task1 import (
+    quadratic_equation_solve,
+    linear_equation_solve,
+    is_float_numbers,
+)
 
 """def test_raise_exception():
     with pytest.raises(ValueError):
         my_func()"""
 
-test_value_quadratic = [(1, 2, -3, (-3, 1)), (1, 2, 1, (-1, None)), (1, 2, 10, ()), (0, 1, 5, (-5, None))]
+test_value_quadratic = [
+    (1, 2, -3, (-3, 1)),
+    (1, 2, 1, (-1, None)),
+    (1, 2, 10, ()),
+    (0, 1, 5, (-5, None)),
+]
 
 
 @pytest.mark.parametrize("a,b,c,expected", test_value_quadratic)
@@ -23,8 +32,14 @@ def test_linear_equation(k, b, expected):
     assert actual == expected
 
 
-test_value_checker = [('1 2 3', True), (' ', False), (' 24.2  11    0', True),
-                      ('adf 1 dl-dd', False), ('11.1', False), ('1 2 3 4', False)]
+test_value_checker = [
+    ("1 2 3", True),
+    (" ", False),
+    (" 24.2  11    0", True),
+    ("adf 1 dl-dd", False),
+    ("11.1", False),
+    ("1 2 3 4", False),
+]
 
 
 @pytest.mark.parametrize("lst, expected", test_value_checker)
