@@ -19,8 +19,12 @@ test_value_quadratic = [
 
 @pytest.mark.parametrize("a,b,c,expected", test_value_quadratic)
 def test_quadratic_equation(a, b, c, expected):
-    actual = quadratic_equation_solve(a, b, c)
-    assert actual[0] == expected[0] and actual[1] == expected[1]
+    if a == 1 and b == 2 and c == 10:
+        with pytest.raises(ValueError, match="Negative discriminant, can not solve it"):
+            quadratic_equation_solve(a, b, c)
+    else:
+        actual = quadratic_equation_solve(a, b, c)
+        assert actual[0] == expected[0] and actual[1] == expected[1]
 
 
 test_value_linear = [(12, 54, (-54 / 12)), (0, 0, None), (0, 5, None), (5, 0, 0)]
