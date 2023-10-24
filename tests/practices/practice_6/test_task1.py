@@ -1,8 +1,10 @@
-import pytest
+import builtins, pytest
+from unittest import mock
 from src.practices.practice_6.task1 import (
     quadratic_equation_solve,
     linear_equation_solve,
     is_float_numbers,
+    main,
 )
 
 
@@ -50,3 +52,8 @@ def test_linear_equation(k, b, expected):
 def test_is_float_numbers(lst, expected):
     actual = is_float_numbers(lst)
     assert actual == expected
+
+
+def test_main():
+    with mock.patch.object(builtins, "input", lambda: "1 4 3"):
+        assert main() == (-3.0, -1.0)

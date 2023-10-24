@@ -50,7 +50,11 @@ def quadratic_equation_solve(A, B, C):  # Ax^2 + Bx + C = 0
         return x1, x2
 
 
-if __name__ == "__main__":
+def main():
     a, b, c = inputer()
     x1, x2 = quadratic_equation_solve(a, b, c)
-    print(x1, x2)
+    return x1, x2
+
+
+if __name__ == "__main__":
+    print(*main())
