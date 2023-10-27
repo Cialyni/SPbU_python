@@ -3,9 +3,11 @@ import sys
 from collections import Counter, OrderedDict
 
 
-def error_executor(file):
-    if not os.path.isfile(file):
+def file_error_executor(file_f, file_g):
+    if not os.path.isfile(file_f):
         raise FileExistsError("File f doesn't exist")
+    if os.path.isfile(file_g):
+        raise FileExistsError("File g already exist")
 
 
 def file_to_sorted_dict(file_in):
@@ -36,7 +38,7 @@ def file_output(file_out, sort_dct):
 if __name__ == "__main__":
     try:
         file_in, file_out = sys.argv[1], sys.argv[2]
-        error_executor(file_in)
+        file_error_executor(file_in, file_out)
         char_dict = file_to_sorted_dict(file_in)
         char_dict = dict_validater(char_dict)
         file_output(file_out, char_dict)
