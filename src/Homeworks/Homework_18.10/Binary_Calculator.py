@@ -1,6 +1,10 @@
 import math
 
 
+def binary_inversion(x):
+    return int(not int(x))
+
+
 def to_decimal(x):
     ans = 0
     if x[-1] == "0":
@@ -8,7 +12,7 @@ def to_decimal(x):
             ans += int(x[i]) * (2**i)
     else:
         x = bin_sum(x, "111")  # -1 in decimal
-        x = [int(x[i]) ^ 1 for i in range(len(x))]
+        x = [binary_inversion(x[i]) for i in range(len(x))]
         for i in range(len(x)):
             ans += x[i] * (2**i)
         ans *= -1
@@ -51,24 +55,21 @@ def to_binary(x):
 
 
 def numbers_input():
-    print("Enter 1-st decimal number")
-    a = int(input())
-    print("Enter 2-nd decimal number:")
-    b = int(input())
+    a = int(input("Enter 1-st decimal number"))
+    b = int(input("Enter 2-nd decimal number:"))
     return a, b
 
 
 if __name__ == "__main__":
     a, b = numbers_input()
-    bin_a, bin_b = bin_normalization(to_binary(a), to_binary(b))
-    print("In decimal:\n{} + {} = {}\n{} - {} = {}".format(a, b, a + b, a, b, a - b))
+    bin_a, bin_b, bin_negative_b = to_binary(a), to_binary(b), to_binary(-b)
     print(
-        "In binary:\n{} + {} = {}\n{} - {} = {}".format(
-            int(bin_a[::-1]),
-            int(bin_b[::-1]),
-            int(bin_sum(bin_a, bin_b)[::-1]),
-            int(bin_a[::-1]),
-            int(bin_b[::-1]),
-            int(bin_sum(bin_a, to_binary(-b))[::-1]),
+        "{} + {} = {}\n{} - {} = {}".format(
+            a,
+            b,
+            to_decimal(bin_sum(bin_a, bin_b)),
+            a,
+            b,
+            to_decimal(bin_sum(bin_a, bin_negative_b)),
         )
     )
