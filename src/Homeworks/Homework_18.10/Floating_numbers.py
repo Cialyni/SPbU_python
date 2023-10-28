@@ -1,32 +1,38 @@
 import math
 
 
-def float_to_binary(x):
-    bin_x = ""
-    int_part, fraction_part = list(map(int, x.split(".")))
-    bin_x += "+" if int_part > 0 else "-"
-    int_part = abs(int_part)
-    fraction_part = float("0." + str(fraction_part))
-    while abs(int_part):
-        bin_x += str(int_part % 2)
-        int_part //= 2
-    bin_x = bin_x[0] + bin_x[1:][::-1]
-    bin_x += "."
-    if not fraction_part:
-        bin_x += "0"
+def int_part_to_binary(x):
+    bin_x = "+" if x >= 0 else "-"
+    x = abs(x)
+    while abs(x):
+        bin_x += str(x % 2)
+        x //= 2
+    return bin_x[0] + bin_x[1:][::-1]
 
-    while fraction_part:
-        bin_x += str(math.floor(fraction_part * 2))
-        fraction_part *= 2
-        if fraction_part >= 1:
-            fraction_part -= 1
+
+def fraction_part_to_binary(x):
+    x = float("0." + str(x))
+    bin_x = ''
+    if not x:
+        bin_x += "0"
+    while x:
+        bin_x += str(math.floor(x * 2))
+        x *= 2
+        if x >= 1:
+            x -= 1
+    return bin_x
+
+
+def float_to_binary(x):
+    int_part, fraction_part = list(map(int, str(x).split(".")))
+    bin_x = int_part_to_binary(int_part) + '.' + fraction_part_to_binary(fraction_part)
     return bin_x
 
 
 def to_exponential(bin_x):
     period = 0
     dot_ind = bin_x.find(".")
-    while dot_ind != 1:
+    while dot_ind != 1:   # swap:  123.45 -> 12.345 -> 1.2345 -> .12345
         bin_x = (
             bin_x[: dot_ind - 1]
             + bin_x[dot_ind - 1 : dot_ind + 1][::-1]
@@ -62,12 +68,19 @@ def type_change(x):
     if command == 3:
         print("Result with FP16:", to_exponential(unexponential(x, 5, 10)))
         return unexponential(x, 5, 10)
+    raise ValueError('Chose 1 or 2 or 3')
 
 
 if __name__ == "__main__":
-    print("Enter a number: ")
-    a = input()
-    bin_a = float_to_binary(a)
-    exponential_a = to_exponential(bin_a)
-    print("Result:", exponential_a)
-    new_type_a = type_change(exponential_a)
+    try:
+        a = float(input("Enter a number: "))
+        bin_a = float_to_binary(a)
+        exponential_a = to_exponential(bin_a)
+        print("Result:", exponential_a)
+        new_type_a = type_change(exponential_a)
+    except ValueError:
+        print('Enter number not something else')
+    finally:
+        print('End of program')
+
+
