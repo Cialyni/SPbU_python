@@ -1,6 +1,6 @@
 import pytest
 from io import StringIO
-from src.practices.practice_6.task1 import (
+from src.Practices.Practice_6.task1 import (
     quadratic_equation_solve,
     linear_equation_solve,
     parse_user_input,
