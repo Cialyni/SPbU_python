@@ -1,14 +1,13 @@
-
 def to_decimal(x):
     ans = 0
     if x[-1] == "0":
         for i in range(len(x) - 1):
-            ans += int(x[i]) * (2 ** i)
+            ans += int(x[i]) * (2**i)
     else:
         x = bin_sum(x, "111")  # -1 in decimal
         x = [int(not int(i)) for i in x]
         for i in range(len(x)):
-            ans += x[i] * (2 ** i)
+            ans += x[i] * (2**i)
         ans *= -1
     return ans
 
@@ -63,7 +62,9 @@ def to_binary(x):
 
 if __name__ == "__main__":
     try:
-        a, b = int(input("Enter 1-st decimal number")), int(input("Enter 2-nd decimal number:"))
+        a, b = int(input("Enter 1-st decimal number")), int(
+            input("Enter 2-nd decimal number:")
+        )
         bin_a, bin_b, bin_negative_b = to_binary(a), to_binary(b), to_binary(-b)
         print(  # f-string so cool 0_0. Why I don't use them early???
             f"{a} + {b} = {to_decimal(bin_sum(bin_a, bin_b))}\n{a} - {b} = {to_decimal(bin_sum(bin_a, bin_negative_b))}"
