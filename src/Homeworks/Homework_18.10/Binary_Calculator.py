@@ -1,20 +1,14 @@
-import math
-
-
-def binary_inversion(x):
-    return int(not int(x))
-
 
 def to_decimal(x):
     ans = 0
     if x[-1] == "0":
         for i in range(len(x) - 1):
-            ans += int(x[i]) * (2**i)
+            ans += int(x[i]) * (2 ** i)
     else:
         x = bin_sum(x, "111")  # -1 in decimal
-        x = [binary_inversion(x[i]) for i in range(len(x))]
+        x = [int(not int(i)) for i in x]
         for i in range(len(x)):
-            ans += x[i] * (2**i)
+            ans += x[i] * (2 ** i)
         ans *= -1
     return ans
 
@@ -30,46 +24,51 @@ def bin_sum(x, y):
     x, y = bin_normalization(x, y)
     bit = 0
     for i in range(len(x)):
-        if int(x[i]) + int(y[i]) + bit >= 2:
-            ans += str((int(x[i]) + int(y[i]) + bit) % 2)
+        xi, yi = int(x[i]), int(y[i])
+        if xi + yi + bit >= 2:
+            ans += str((xi + yi + bit) % 2)
             bit = 1
         else:
-            ans += str((int(x[i]) + int(y[i]) + bit) % 2)
+            ans += str((xi + yi + bit) % 2)
             bit = 0
+    if len(ans) == len(x):
+        ans += ans[-1]
     return ans
 
 
-def to_binary(x):
+def to_direct_code(x):
     bin_x = ""
-    copy_x = abs(x)
-    while copy_x > 0:
-        bin_x += str(copy_x % 2)
-        copy_x //= 2
+    x = abs(x)
+    while x > 0:
+        bin_x += str(x % 2)
+        x //= 2
+    return bin_x
+
+
+def to_additional_code(x):
+    x = [int(not int(elem)) for elem in x]
+    x += "11"
+    x = bin_sum(x, "100")  # 1 in decimal
+    return x
+
+
+def to_binary(x):
+    bin_x = to_direct_code(x)
     if x < 0:
-        bin_x = [str(int(elem) ^ 1) for elem in bin_x]
-        bin_x += "11"
-        bin_x = bin_sum(bin_x, "100")  # 1 in decimal
+        bin_x = to_additional_code(bin_x)
     else:
         bin_x += "00"
     return bin_x
 
 
-def numbers_input():
-    a = int(input("Enter 1-st decimal number"))
-    b = int(input("Enter 2-nd decimal number:"))
-    return a, b
-
-
 if __name__ == "__main__":
-    a, b = numbers_input()
-    bin_a, bin_b, bin_negative_b = to_binary(a), to_binary(b), to_binary(-b)
-    print(
-        "{} + {} = {}\n{} - {} = {}".format(
-            a,
-            b,
-            to_decimal(bin_sum(bin_a, bin_b)),
-            a,
-            b,
-            to_decimal(bin_sum(bin_a, bin_negative_b)),
+    try:
+        a, b = int(input("Enter 1-st decimal number")), int(input("Enter 2-nd decimal number:"))
+        bin_a, bin_b, bin_negative_b = to_binary(a), to_binary(b), to_binary(-b)
+        print(  # f-string so cool 0_0. Why I don't use them early???
+            f"{a} + {b} = {to_decimal(bin_sum(bin_a, bin_b))}\n{a} - {b} = {to_decimal(bin_sum(bin_a, bin_negative_b))}"
         )
-    )
+    except ValueError:
+        print("Input numbers!")
+    finally:
+        print("End of program")
