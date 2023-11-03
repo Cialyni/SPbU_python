@@ -68,7 +68,7 @@ def get(map: Tree, key: Key) -> Value:
             current_root = current_root.right
         else:
             current_root = current_root.left
-    raise LookupError
+    raise AttributeError("BST hasn't Node with this key")
 
 
 def has_key(map: Tree, key: Key) -> bool:
@@ -76,9 +76,9 @@ def has_key(map: Tree, key: Key) -> bool:
     while not (current_root is None):
         if key == current_root.key:
             return True
-        if key > current_root.key:
+        elif key > current_root.key:
             current_root = current_root.right
-        if key < current_root.key:
+        elif key < current_root.key:
             current_root = current_root.left
     return False
 
@@ -171,20 +171,3 @@ def traverse(map: Tree, order: str) -> list[T]:
 
 # ______________________________________________________________________________
 
-"""t = create_tree_map()
-put(t, 1, 2)
-put(t, 12, 111)
-put(t, 16, 999)
-put(t, 11, 911)
-put(t, 15, 0)
-put(t, 18, 444)
-put(t, 19, 190)
-put(t, 11.5, -12)
-put(t, -16, 122)
-put(t, 7, -122)
-#print(traverse(t, 'pre-order'))
-print(remove(t, 11))
-print(traverse(t, 'pre-order'))
-delete_tree_map(t)
-print(traverse(t, 'pre-order'))
-"""
