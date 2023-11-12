@@ -3,7 +3,7 @@ import math
 
 def int_part_to_binary(x):
     bin_x = "+" if x >= 0 else "-"
-    x = abs(x)
+    x = abs(int(x))
     while abs(x):
         bin_x += str(x % 2)
         x //= 2
@@ -11,10 +11,7 @@ def int_part_to_binary(x):
 
 
 def fraction_part_to_binary(x):
-    x = float("0." + str(x))
     bin_x = ""
-    if not x:
-        bin_x += "0"
     while x:
         bin_x += str(math.floor(x * 2))
         x *= 2
@@ -24,34 +21,28 @@ def fraction_part_to_binary(x):
 
 
 def float_to_binary(x):
-    int_part, fraction_part = list(map(int, str(x).split(".")))
+    fraction_part, int_part = math.modf(x)[0], math.modf(x)[1]
     bin_x = int_part_to_binary(int_part) + "." + fraction_part_to_binary(fraction_part)
     return bin_x
 
 
 def to_exponential(bin_x):
-    period = 0
-    dot_ind = bin_x.find(".")
-    while dot_ind != 1:  # swap:  123.45 -> 12.345 -> 1.2345 -> .12345
-        bin_x = (
-            bin_x[: dot_ind - 1]
-            + bin_x[dot_ind - 1 : dot_ind + 1][::-1]
-            + bin_x[dot_ind + 1 :]
-        )
-        period += 1
-        dot_ind -= 1
-    bin_x = bin_x.replace(".", "0.")
+    period = bin_x.find(".") - 1
+    bin_x = bin_x.replace(".", "")
+    bin_x = bin_x[0] + "0." + bin_x[1:]
     return bin_x + "*2^" + str(period)
 
 
 def unexponential(x, p, m):
     new_x = x[0]
+    first_binary_digit_index_in_exponential_view = 3
+    count_of_all_informative_simbols = 7
     period = int(x.split("^")[-1])
     for i in range(min(period, p)):
-        new_x += x[3 + i]
+        new_x += x[first_binary_digit_index_in_exponential_view + i]
     new_x += "."
-    for i in range(min(len(x) - 7 - period, m)):
-        new_x += x[period + 3 + i]
+    for i in range(min(len(x) - count_of_all_informative_simbols - period, m)):
+        new_x += x[period + first_binary_digit_index_in_exponential_view + i]
     return new_x
 
 
