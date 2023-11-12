@@ -33,7 +33,7 @@ def to_exponential(bin_x):
     return bin_x + "*2^" + str(period)
 
 
-def unexponential(x, p, m):
+def un_exponential(x, p, m):
     new_x = x[0]
     first_binary_digit_index_in_exponential_view = 3
     count_of_all_informative_simbols = 7
@@ -51,14 +51,14 @@ def type_change(x):
     print("Choose type:\n1 = FP64\n2 = FP32\n3 = FP16")
     command = int(input())
     if command == 1:
-        print("Result with FP64:", to_exponential(unexponential(x, 11, 53)))
-        return unexponential(x, 11, 53)
+        print("Result with FP64:", to_exponential(un_exponential(x, 11, 53)))
+        return un_exponential(x, 11, 53)
     if command == 2:
-        print("Result with FP32:", to_exponential(unexponential(x, 8, 23)))
-        return unexponential(x, 8, 23)
+        print("Result with FP32:", to_exponential(un_exponential(x, 8, 23)))
+        return un_exponential(x, 8, 23)
     if command == 3:
-        print("Result with FP16:", to_exponential(unexponential(x, 5, 10)))
-        return unexponential(x, 5, 10)
+        print("Result with FP16:", to_exponential(un_exponential(x, 5, 10)))
+        return un_exponential(x, 5, 10)
     raise ValueError("Chose 1 or 2 or 3")
 
 
@@ -71,5 +71,3 @@ if __name__ == "__main__":
         new_type_a = type_change(exponential_a)
     except ValueError:
         print("Enter number not something else")
-    finally:
-        print("End of program")
