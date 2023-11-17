@@ -21,6 +21,7 @@ pushFront(deq, 3)  # 3 1 10
 pushBack(deq, 11)  # 2 3 1 10 11
 pushFront(deq, 2)  # 2 3 1 10
 pushBack(deq, -12)  # 2 3 1 10 11 -12
+print_deq(deq)
 print(tail(deq))  # -12
 print(head(deq))  # 2
 print(size(deq))  # 6
