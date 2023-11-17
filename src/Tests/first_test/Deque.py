@@ -21,7 +21,7 @@ def create():
 
 
 def delete(deq: MyDeque):
-    while not deq.current.value is None:
+    while not deq.current.next is None:
         del deq.current.prev
         deq.current = deq.current.next
     del deq
