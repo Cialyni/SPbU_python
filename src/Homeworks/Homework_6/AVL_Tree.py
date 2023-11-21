@@ -182,7 +182,9 @@ def remove(map: Tree, key: Any) -> Any:
             new_node = find_min_in_right_subtree(current_root)
             current_root.key, current_root.value = new_node.key, new_node.value
             current_root.right = _removing(current_root.right, current_root.key)
-        current_root.height = 1 + max(_height(current_root.left), _height(current_root.right))
+        current_root.height = 1 + max(
+            _height(current_root.left), _height(current_root.right)
+        )
         balance = _balance(current_root)
         if balance > 1 and _balance(current_root.left) >= 0:
             return rotateR(current_root)
@@ -246,9 +248,9 @@ if __name__ == "__main__":
     put(bst, 1, 6)
     put(bst, 4, 111)
     put(bst, 6, -1)
-    put(bst, 4, 'ad')
-    put(bst, 2, '12122')
-    put(bst, -5,  [12, 2, 3])
-    put(bst, 11, '1')
+    put(bst, 4, "ad")
+    put(bst, 2, "12122")
+    put(bst, -5, [12, 2, 3])
+    put(bst, 11, "1")
     put(bst, 15, (-12, 3))
-    print(traverse(bst, 'post-order'))
+    print(traverse(bst, "post-order"))
