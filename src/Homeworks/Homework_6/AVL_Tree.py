@@ -203,8 +203,7 @@ def remove_keys(tree: Tree, key_left: Any, key_right: Any):
 
 def remove(map: Tree, key: Any) -> Any:
     if not has_key(map, key):
-        # raise AttributeError("BST hasn't Node with this key")
-        return
+        raise AttributeError("BST hasn't Node with this key")
     deleting_value = get(map, key)
 
     def _removing(current_root: TreeNode, key: Any):
