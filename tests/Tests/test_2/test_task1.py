@@ -1,9 +1,6 @@
 import pytest
 from io import StringIO
-from src.Tests.test_2.task1 import (
-    fib_number_finder,
-    main
-)
+from src.Tests.test_2.task1 import fib_number_finder, main
 
 
 @pytest.mark.parametrize(
@@ -23,8 +20,7 @@ def test_exception_in_fib_number_finder():
     ):
         fib_number_finder(-1)
         fib_number_finder(91)
-        fib_number_finder('ase')
-
+        fib_number_finder("ase")
 
 
 @pytest.mark.parametrize(  # this strange format made black :)
