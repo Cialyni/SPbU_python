@@ -9,8 +9,8 @@ from src.Tests.test_2.task1 import (
 @pytest.mark.parametrize(
     "n, expected",
     (
-        (13, 377),
-        (66, 44945570212853),
+        (13, 233),
+        (66, 27777890035288),
     ),
 )
 def test_fib_number_finder(n, expected):
@@ -36,8 +36,8 @@ def test_exception_in_fib_number_finder():
         ),
         ("0 0 0", "ERROR!\nEnter only one integer number in range [0:90]"),
         ("abasdasf", "ERROR!\nEnter only one integer number in range [0:90]"),
-        ("45", "Result is: 1836311903"),
-        ("90", "Result is: 4660046610375530309"),
+        ("45", "Result is: 1134903170"),
+        ("90", "Result is: 2880067194370816120"),
     ),
 )
 def test_main(monkeypatch, imitation_input, expected):
