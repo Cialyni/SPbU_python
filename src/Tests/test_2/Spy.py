@@ -20,7 +20,7 @@ def print_usage_statistic(function):
         for elem in FOO_LOGS:
             yield elem[0], elem[1]
     else:
-        raise Warning('No decorator')
+        raise Warning("No decorator")
 
 
 @spy
@@ -33,15 +33,14 @@ def main():
     foo("hello")
     foo(5)
 
-    for (time, parameters) in print_usage_statistic(foo):
-        all_parameters = ''
+    for time, parameters in print_usage_statistic(foo):
+        all_parameters = ""
         for i in parameters:
             all_parameters += str(i)
         print(
-            f"function foo was called at {time} "
-            f"with parameters:\n{all_parameters}"
+            f"function foo was called at {time} " f"with parameters:\n{all_parameters}"
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
