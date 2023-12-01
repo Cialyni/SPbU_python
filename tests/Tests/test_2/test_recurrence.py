@@ -1,6 +1,6 @@
 import pytest
 from io import StringIO
-from src.Tests.test_2.task1 import recurrence_number_finder, main
+from src.Tests.test_2.recurrence import recurrence_number_finder, main
 
 
 @pytest.mark.parametrize(
