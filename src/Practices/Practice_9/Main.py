@@ -1,4 +1,4 @@
-from FSM import validate_string, create_fs_machine
+from src.Practices.Practice_9.FSM import validate_string, create_fs_machine
 
 
 def main():
