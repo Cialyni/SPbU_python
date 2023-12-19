@@ -1,8 +1,9 @@
 from typing import TypeVar, Generic, Any
 from dataclasses import dataclass
+from pprint import pprint
+
 
 T = TypeVar("T")
-REMOVING_VALUE = None
 
 
 @dataclass
@@ -21,6 +22,29 @@ class Tree(Generic[T]):
 
 def create_tree_map() -> Tree:
     return Tree()
+
+
+def split(tree: Tree, key: Any) -> tuple[Tree, Tree]:
+    lower_than_key = []
+    bigger_than_key = []
+    for elem in traverse(tree, "*"):
+        if elem[0][0] < key:
+            lower_than_key.append(elem)
+        else:
+            bigger_than_key.append(elem)
+    new_tree1 = create_tree_map()
+    for elem in lower_than_key:
+        put(new_tree1, elem[0], elem[1])
+    new_tree2 = create_tree_map()
+    for elem in bigger_than_key:
+        put(new_tree2, elem[0], elem[1])
+    return (new_tree1, new_tree2)
+
+
+def join(tree: Tree, another: Tree):
+    another_elems = traverse(another, "*")
+    for key_value in another_elems:
+        put(tree, key_value[0], key_value[1])
 
 
 def delete_tree_map(map: Tree):
@@ -163,6 +187,20 @@ def find_min_in_right_subtree(root: TreeNode) -> TreeNode:
     return current_root
 
 
+def getAll(tree: Tree, key_left: Any, key_right: Any) -> list[Any]:
+    keys = []
+    for key in traverse(tree, "in-order"):
+        if key_left <= key < key_right:
+            keys.append(key)
+    return keys
+
+
+def remove_keys(tree: Tree, key_left: Any, key_right: Any):
+    for key in traverse(tree, "in-order"):
+        if key_left <= key < key_right:
+            remove(tree, key)
+
+
 def remove(map: Tree, key: Any) -> Any:
     if not has_key(map, key):
         raise AttributeError("BST hasn't Node with this key")
@@ -202,38 +240,57 @@ def remove(map: Tree, key: Any) -> Any:
     return deleting_value
 
 
-def pre_order_traverse(root: TreeNode, nodes):
-    if not (root is None):
-        nodes.append(root.key)
-        pre_order_traverse(root.left, nodes)
-        pre_order_traverse(root.right, nodes)
-    return nodes
-
-
-def in_order_traverse(root: TreeNode, nodes):
-    if not (root is None):
-        in_order_traverse(root.left, nodes)
-        nodes.append(root.key)
-        in_order_traverse(root.right, nodes)
-    return nodes
-
-
-def post_order_traverse(root: TreeNode, nodes):
-    if not (root is None):
-        post_order_traverse(root.left, nodes)
-        post_order_traverse(root.right, nodes)
-        nodes.append(root.key)
-    return nodes
-
-
 def traverse(map: Tree, order: str) -> list[T]:
-    ans = []
     if order == "pre-order":
-        return pre_order_traverse(map.root, ans)
+
+        def _pre_order_traverse(root: TreeNode, nodes):
+            if not (root is None):
+                nodes.append(root.key)
+                _pre_order_traverse(root.left, nodes)
+                _pre_order_traverse(root.right, nodes)
+            return nodes
+
+        return _pre_order_traverse(map.root, [])
     if order == "in-order":
-        return in_order_traverse(map.root, ans)
+
+        def _in_order_traverse(root: TreeNode, nodes):
+            if not (root is None):
+                _in_order_traverse(root.left, nodes)
+                nodes.append(root.key)
+                _in_order_traverse(root.right, nodes)
+            return nodes
+
+        return _in_order_traverse(map.root, [])
     if order == "post-order":
-        return post_order_traverse(map.root, ans)
+
+        def _post_order_traverse(root: TreeNode, nodes):
+            if not (root is None):
+                _post_order_traverse(root.left, nodes)
+                _post_order_traverse(root.right, nodes)
+                nodes.append(root.key)
+            return nodes
+
+        return _post_order_traverse(map.root, [])
+    if order == "*":
+
+        def _traverse(root: TreeNode, nodes):
+            if not (root is None):
+                nodes.append((root.key, root.value))
+                _traverse(root.left, nodes)
+                _traverse(root.right, nodes)
+            return nodes
+
+        return _traverse(map.root, [])
+    if order == "nodes":
+
+        def _get_all_nodes(root: TreeNode, nodes):
+            if not (root is None):
+                nodes.append(root)
+                _get_all_nodes(root.left, nodes)
+                _get_all_nodes(root.right, nodes)
+            return nodes
+
+        return _get_all_nodes(map.root, [])
 
 
 # ______________________________________________________________________________
@@ -253,4 +310,6 @@ if __name__ == "__main__":
     put(bst, -5, [12, 2, 3])
     put(bst, 11, "1")
     put(bst, 15, (-12, 3))
-    print(traverse(bst, "post-order"))
+    pprint(traverse(bst, "in-order"))
+    remove_keys(bst, 1, 9)
+    pprint(traverse(bst, "in-order"))
