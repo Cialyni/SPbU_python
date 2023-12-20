@@ -1,6 +1,6 @@
 import pytest
 from io import StringIO
-from src.Tests.final_test.task1 import (
+from src.Tests.final_test.Sprites import (
     generate_sprite,
     main,
     generate_sprite_config,
