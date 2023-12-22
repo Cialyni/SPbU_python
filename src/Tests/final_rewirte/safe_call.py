@@ -7,11 +7,8 @@ import traceback
 def traceback_parser(traceback):
     error_place = ""
     tb = traceback.split("\n")[1:]
-    tb_line2 = tb[2].split()
-    error_place += (
-        tb_line2[-4] + " " + tb_line2[-3] + " " + tb_line2[-2] + " " + tb_line2[-1]
-    )
-    error_place += " in " + tb[3].replace(" ", "")
+    ind = tb[2].find("line")
+    error_place += tb[2][ind:] + " in " + tb[3].replace(" ", "")
     return error_place
 
 
