@@ -8,8 +8,18 @@ def traceback_parser(traceback):
     error_place = ""
     tb = traceback.split("\n")[1:]
     tb_line2 = tb[2].split()
+    ind = 0
+    for i, string in enumerate(tb_line2):
+        if string == "line":
+            ind = i
     error_place += (
-        tb_line2[-4] + " " + tb_line2[-3] + " " + tb_line2[-2] + " " + tb_line2[-1]
+        tb_line2[ind]
+        + " "
+        + tb_line2[ind + 1]
+        + " "
+        + tb_line2[ind + 2]
+        + " "
+        + tb_line2[ind + 3]
     )
     error_place += " in " + tb[3].replace(" ", "")
     return error_place
