@@ -1,4 +1,4 @@
-import pytest
+import pytest, copy
 from src.Homeworks.Homework_6.AVL_Tree import (
     TreeNode,
     Tree,
@@ -12,6 +12,9 @@ from src.Homeworks.Homework_6.AVL_Tree import (
     get_minimum,
     get_upper_bound,
     traverse,
+    rotate_left,
+    rotate_right,
+    insert,
 )
 
 TEST_AVL_TREE = Tree(
@@ -63,6 +66,64 @@ def test_exception_in_get(key1=212, key2=0):
         get(TEST_AVL_TREE, key2)
 
 
+def test_rotate_left():
+    expected = Tree(
+        root=TreeNode(
+            key=5,
+            value=0,
+            left=TreeNode(key=0, value=0, left=None, right=None, height=1),
+            right=TreeNode(key=10, value=0, left=None, right=None, height=1),
+            height=2,
+        )
+    )
+    test_tree = Tree(
+        root=TreeNode(
+            key=0,
+            value=0,
+            left=None,
+            right=TreeNode(
+                key=5,
+                value=0,
+                left=None,
+                right=TreeNode(key=10, value=0, left=None, right=None, height=1),
+                height=2,
+            ),
+            height=3,
+        )
+    )
+    test_tree.root = rotate_left(test_tree.root)
+    assert test_tree == expected
+
+
+def test_rotate_right():
+    expected = Tree(
+        root=TreeNode(
+            key=-5,
+            value=0,
+            left=TreeNode(key=-10, value=0, left=None, right=None, height=1),
+            right=TreeNode(key=0, value=0, left=None, right=None, height=1),
+            height=2,
+        )
+    )
+    test_tree = Tree(
+        root=TreeNode(
+            key=0,
+            value=0,
+            left=TreeNode(
+                key=-5,
+                value=0,
+                left=TreeNode(key=-10, value=0, left=None, right=None, height=1),
+                right=None,
+                height=2,
+            ),
+            right=None,
+            height=3,
+        )
+    )
+    test_tree.root = rotate_right(test_tree.root)
+    assert test_tree == expected
+
+
 def test_exception_in_remove(key1=212, key2=-1):
     with pytest.raises(AttributeError, match="BST hasn't Node with this key"):
         remove(TEST_AVL_TREE, key1)
@@ -102,6 +163,99 @@ def test_get(key, expected):
     assert get(TEST_AVL_TREE, key) == expected
 
 
+def test_remove():
+    expected = Tree(
+        root=TreeNode(
+            key=8,
+            value=2,
+            left=TreeNode(
+                key=3,
+                value=4,
+                left=TreeNode(
+                    key=1,
+                    value=6,
+                    left=TreeNode(
+                        key=-5, value=[12, 2, 3], left=None, right=None, height=1
+                    ),
+                    right=TreeNode(
+                        key=2, value="12122", left=None, right=None, height=1
+                    ),
+                    height=2,
+                ),
+                right=TreeNode(
+                    key=6,
+                    value=-1,
+                    left=TreeNode(key=4, value="ad", left=None, right=None, height=1),
+                    right=TreeNode(key=7, value=1, left=None, right=None, height=1),
+                    height=2,
+                ),
+                height=3,
+            ),
+            right=TreeNode(
+                key=13,
+                value=3,
+                left=TreeNode(key=9, value=5, left=None, right=None, height=1),
+                right=TreeNode(key=15, value=(-12, 3), left=None, right=None, height=1),
+                height=2,
+            ),
+            height=4,
+        )
+    )
+    new_test_tree = copy.deepcopy(TEST_AVL_TREE)
+    remove_value = remove(new_test_tree, 11)
+    assert expected == new_test_tree and remove_value == "1"
+
+
+def test_insert():
+    expected = Tree(
+        root=TreeNode(
+            key=8,
+            value=2,
+            left=TreeNode(
+                key=3,
+                value=4,
+                left=TreeNode(
+                    key=1,
+                    value=6,
+                    left=TreeNode(
+                        key=-5, value=[12, 2, 3], left=None, right=None, height=1
+                    ),
+                    right=TreeNode(
+                        key=2, value="12122", left=None, right=None, height=1
+                    ),
+                    height=2,
+                ),
+                right=TreeNode(
+                    key=6,
+                    value=-1,
+                    left=TreeNode(key=4, value="ad", left=None, right=None, height=1),
+                    right=TreeNode(key=7, value=1, left=None, right=None, height=1),
+                    height=2,
+                ),
+                height=3,
+            ),
+            right=TreeNode(
+                key=11,
+                value="1",
+                left=TreeNode(key=9, value=5, left=None, right=None, height=1),
+                right=TreeNode(
+                    key=13,
+                    value=3,
+                    left=TreeNode(key=12, value=12, left=None, right=None, height=1),
+                    right=TreeNode(
+                        key=15, value=(-12, 3), left=None, right=None, height=1
+                    ),
+                    height=2,
+                ),
+                height=3,
+            ),
+            height=4,
+        )
+    )
+    new_test_tree = copy.deepcopy(TEST_AVL_TREE)
+    assert expected.root == insert(new_test_tree.root, 12, 12)
+
+
 def test_put(key1=212, key2=0, value1="212", value2=1412):
     ht = create_tree_map()
     put(ht, key1, value1)
@@ -129,3 +283,33 @@ def test_traverse(order, expected):
         assert traverse(TEST_AVL_TREE, "in-order") == expected
     if order == "post-order":
         assert traverse(TEST_AVL_TREE, "post-order") == expected
+
+
+def test_get_minimum_and_get_maximum():
+    assert get_minimum(TEST_AVL_TREE) == -5 and get_maximum(TEST_AVL_TREE) == 15
+
+
+@pytest.mark.parametrize(
+    "given_value, expected",
+    (
+        (11, 13),
+        (-11, -5),
+        (4, 6),
+        (10, 11),
+    ),
+)
+def test_upper_bound(given_value, expected):
+    assert get_upper_bound(TEST_AVL_TREE, given_value) == expected
+
+
+@pytest.mark.parametrize(
+    "given_value, expected",
+    (
+        (11, 11),
+        (-1, 1),
+        (12, 13),
+        (5, 6),
+    ),
+)
+def test_lower_bound(given_value, expected):
+    assert get_lower_bound(TEST_AVL_TREE, given_value) == expected

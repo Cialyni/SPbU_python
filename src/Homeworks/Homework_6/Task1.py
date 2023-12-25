@@ -62,3 +62,5 @@ if __name__ == "__main__":
                     break
     for elem in traverse(map, "in-order"):
         shop_balance_file.writelines(f"{elem} {get(map, elem)}\n")
+    shop_result_file.close()
+    shop_balance_file.close()

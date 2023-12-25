@@ -1,22 +1,21 @@
 from typing import TypeVar, Generic, Any
 from dataclasses import dataclass
 
-T = TypeVar("T")
 REMOVING_VALUE = None
 
 
 @dataclass
-class TreeNode(Generic[T]):
+class TreeNode:
     key: Any
     value: Any
-    left: "TreeNode[T]"
-    right: "TreeNode[T]"
+    left: "TreeNode"
+    right: "TreeNode"
     height: int = 1
 
 
 @dataclass
-class Tree(Generic[T]):
-    root: TreeNode[T] = None
+class Tree:
+    root: TreeNode = None
 
 
 def create_tree_map() -> Tree:
@@ -41,23 +40,23 @@ def _height(node: TreeNode) -> int:
     return 0 if node is None else node.height
 
 
-def rotateL(node: TreeNode) -> TreeNode:
+def rotate_left(node: TreeNode) -> TreeNode:
     a = node.right
     b = a.left
     a.left = node
     node.right = b
-    node.height = 1 + max(_height(node.left), _height(node.right))
-    a.height = 1 + max(_height(a.left), _height(a.right))
+    update_height(node)
+    update_height(a)
     return a
 
 
-def rotateR(node: TreeNode) -> TreeNode:
+def rotate_right(node: TreeNode) -> TreeNode:
     a = node.left
     b = a.right
     a.right = node
     node.left = b
-    node.height = 1 + max(_height(node.left), _height(node.right))
-    a.height = 1 + max(_height(a.left), _height(a.right))
+    update_height(node)
+    update_height(a)
     return a
 
 
@@ -68,7 +67,26 @@ def put(map: Tree, key: Any, value: Any):
         map.root = insert(map.root, key, value)
 
 
-def insert(root: TreeNode, key: Any, value: Any):
+def update_height(root: TreeNode):
+    root.height = 1 + max(_height(root.left), _height(root.right))
+
+
+def balancing(root: TreeNode, key) -> TreeNode | None:
+    balance = _balance(root)
+    if balance > 1:
+        if root.left.key > key:  # small rotate
+            return rotate_right(root)
+        root.left = rotate_left(root.left)
+        return rotate_right(root)  # big rotate
+    if balance < -1:
+        if key > root.right.key:  # small rotate
+            return rotate_left(root)
+        root.right = rotate_right(root.right)
+        return rotate_left(root)  # big rotate
+    return None
+
+
+def insert(root: TreeNode, key: Any, value: Any) -> TreeNode:
     if root is None:
         return TreeNode(key, value, None, None, 1)
     if key > root.key:
@@ -77,24 +95,16 @@ def insert(root: TreeNode, key: Any, value: Any):
         root.left = insert(root.left, key, value)
     else:
         root.value = value
-    root.height = 1 + max(_height(root.left), _height(root.right))
-    balance = _balance(root)
-    if balance > 1 and root.left.key > key:
-        return rotateR(root)
-    if balance < -1 and key > root.right.key:
-        return rotateL(root)
-    if balance > 1 and key > root.left.key:
-        root.left = rotateL(root.left)
-        return rotateR(root)
-    if balance < -1 and key < root.right.key:
-        root.right = rotateR(root.right)
-        return rotateL(root)
+    update_height(root)
+    rotate_root = balancing(root, key)
+    if rotate_root is not None:
+        return rotate_root
     return root
 
 
 def get(map: Tree, key: Any) -> Any:
     current_root = map.root
-    while not (current_root is None):
+    while current_root is not None:
         if key == current_root.key:
             return current_root.value
         elif key > current_root.key:
@@ -106,7 +116,7 @@ def get(map: Tree, key: Any) -> Any:
 
 def has_key(map: Tree, key: Any) -> bool:
     current_root = map.root
-    while not (current_root is None):
+    while current_root is not None:
         if key == current_root.key:
             return True
         elif key > current_root.key:
@@ -119,7 +129,7 @@ def has_key(map: Tree, key: Any) -> bool:
 def get_maximum(map: Tree) -> Any:
     current_root = map.root
     maximum_key = current_root.key
-    while not current_root is None:
+    while current_root is not None:
         maximum_key = current_root.key
         current_root = current_root.right
     return maximum_key
@@ -128,7 +138,7 @@ def get_maximum(map: Tree) -> Any:
 def get_minimum(map: Tree) -> Any:
     current_root = map.root
     minimum_key = current_root.key
-    while not current_root is None:
+    while current_root is not None:
         minimum_key = current_root.key
         current_root = current_root.left
     return minimum_key
@@ -139,7 +149,7 @@ def get_upper_bound(map: Tree, key: Any) -> Any:
         raise AttributeError
     current_root = map.root
     upper_bound = current_root.key
-    while not (current_root is None):
+    while current_root is not None:
         upper_bound = current_root.key if current_root.key > key else upper_bound
         if current_root.key > key:
             current_root = current_root.left
@@ -158,7 +168,7 @@ def find_min_in_right_subtree(root: TreeNode) -> TreeNode:
     current_root = root.right
     if current_root is None:
         return root
-    while not (current_root.left is None):
+    while current_root.left is not None:
         current_root = current_root.left
     return current_root
 
@@ -168,11 +178,11 @@ def remove(map: Tree, key: Any) -> Any:
         raise AttributeError("BST hasn't Node with this key")
     deleting_value = get(map, key)
 
-    def _removing(current_root: TreeNode, key: Any):
+    def _remove(current_root: TreeNode, key: Any):
         if current_root.key > key:
-            current_root.left = _removing(current_root.left, key)
+            current_root.left = _remove(current_root.left, key)
         elif current_root.key < key:
-            current_root.right = _removing(current_root.right, key)
+            current_root.right = _remove(current_root.right, key)
         else:
             if current_root.left is None:
                 return current_root.right
@@ -181,24 +191,14 @@ def remove(map: Tree, key: Any) -> Any:
 
             new_node = find_min_in_right_subtree(current_root)
             current_root.key, current_root.value = new_node.key, new_node.value
-            current_root.right = _removing(current_root.right, current_root.key)
-        current_root.height = 1 + max(
-            _height(current_root.left), _height(current_root.right)
-        )
-        balance = _balance(current_root)
-        if balance > 1 and _balance(current_root.left) >= 0:
-            return rotateR(current_root)
-        if balance < -1 and _balance(current_root.right) <= 0:
-            return rotateL(current_root)
-        if balance > 1 and _balance(current_root.left) < 0:
-            current_root.left = rotateL(current_root.left)
-            return rotateR(current_root)
-        if balance < -1 and _balance(current_root.right) > 0:
-            current_root.right = rotateR(current_root.right)
-            return rotateL(current_root)
+            current_root.right = _remove(current_root.right, current_root.key)
+        update_height(current_root)
+        rotate_root = balancing(current_root, key)
+        if rotate_root is not None:
+            return rotate_root
         return current_root
 
-    map.root = _removing(map.root, key)
+    map.root = _remove(map.root, key)
     return deleting_value
 
 
@@ -226,7 +226,7 @@ def post_order_traverse(root: TreeNode, nodes):
     return nodes
 
 
-def traverse(map: Tree, order: str) -> list[T]:
+def traverse(map: Tree, order: str):
     ans = []
     if order == "pre-order":
         return pre_order_traverse(map.root, ans)
@@ -239,18 +239,50 @@ def traverse(map: Tree, order: str) -> list[T]:
 # ______________________________________________________________________________
 
 if __name__ == "__main__":
-    bst = create_tree_map()
-    put(bst, 7, 1)
-    put(bst, 8, 2)
-    put(bst, 13, 3)
-    put(bst, 3, 4)
-    put(bst, 9, 5)
-    put(bst, 1, 6)
-    put(bst, 4, 111)
-    put(bst, 6, -1)
-    put(bst, 4, "ad")
-    put(bst, 2, "12122")
-    put(bst, -5, [12, 2, 3])
-    put(bst, 11, "1")
-    put(bst, 15, (-12, 3))
-    print(traverse(bst, "post-order"))
+    TEST_AVL_TREE = Tree(
+        root=TreeNode(
+            key=8,
+            value=2,
+            left=TreeNode(
+                key=3,
+                value=4,
+                left=TreeNode(
+                    key=1,
+                    value=6,
+                    left=TreeNode(
+                        key=-5, value=[12, 2, 3], left=None, right=None, height=1
+                    ),
+                    right=TreeNode(
+                        key=2, value="12122", left=None, right=None, height=1
+                    ),
+                    height=2,
+                ),
+                right=TreeNode(
+                    key=6,
+                    value=-1,
+                    left=TreeNode(key=4, value="ad", left=None, right=None, height=1),
+                    right=TreeNode(key=7, value=1, left=None, right=None, height=1),
+                    height=2,
+                ),
+                height=3,
+            ),
+            right=TreeNode(
+                key=11,
+                value="1",
+                left=TreeNode(key=9, value=5, left=None, right=None, height=1),
+                right=TreeNode(
+                    key=13,
+                    value=3,
+                    left=None,
+                    right=TreeNode(
+                        key=15, value=(-12, 3), left=None, right=None, height=1
+                    ),
+                    height=2,
+                ),
+                height=3,
+            ),
+            height=4,
+        )
+    )
+    remove(TEST_AVL_TREE, 11)
+    print(get_lower_bound(TEST_AVL_TREE, 11))
