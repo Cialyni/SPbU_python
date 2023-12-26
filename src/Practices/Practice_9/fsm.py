@@ -67,7 +67,7 @@ def give_message_about_string(fsm_lst: list[FSMachine], string: str):
         return "Еhe empty set is suitable for all languages\n"
     for fsm in fsm_lst:
         if validate_string(fsm, string):
-            output_str += "This string belong to the " + fsm.language_name + '\n'
+            output_str += "This string belong to the " + fsm.language_name + "\n"
     if not output_str:
         return "This string does not belong to the any of given languages\n"
     return output_str
