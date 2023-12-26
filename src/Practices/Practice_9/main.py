@@ -1,10 +1,9 @@
-from src.Practices.Practice_9.fsm import (
+from .fsm import (
     create_fs_machine,
     give_message_about_string,
     create_aboba_fs_machine,
     create_float_fs_machine,
 )
-import string
 
 
 def main():

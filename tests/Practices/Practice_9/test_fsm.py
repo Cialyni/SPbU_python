@@ -7,7 +7,6 @@ from src.Practices.Practice_9.fsm import (
     create_float_fs_machine,
 )
 from src.Practices.Practice_9.main import main
-import string
 
 FSM_aboba = create_aboba_fs_machine()
 FSM_float = create_float_fs_machine()
