@@ -1,22 +1,11 @@
 import pytest
 from io import StringIO
 
-from src.Practices.Practice_9.fsm import validate_string, create_fs_machine
+from src.Practices.Practice_9.fsm import validate_string, create_aboba_fs_machine
 from src.Practices.Practice_9.main import main
 
 
-FSM = create_fs_machine(
-    initial=0,
-    accepting=[
-        3,
-    ],
-    transitions={
-        0: {"a": 1, "b": 0},
-        1: {"a": 1, "b": 2},
-        2: {"a": 1, "b": 3},
-        3: {"a": 1, "b": 0},
-    },
-)
+FSM = create_aboba_fs_machine()
 
 
 @pytest.mark.parametrize(
