@@ -102,28 +102,27 @@ def insert(root: TreeNode, key: Any, value: Any) -> TreeNode:
     return root
 
 
-def get(map: Tree, key: Any) -> Any:
+def get_node(map: Tree, key: Any) -> TreeNode | None:
     current_root = map.root
     while current_root is not None:
         if key == current_root.key:
-            return current_root.value
+            return current_root
         elif key > current_root.key:
             current_root = current_root.right
         else:
             current_root = current_root.left
-    raise AttributeError("BST hasn't Node with this key")
+    return None
+
+
+def get(map: Tree, key: Any) -> Any:
+    node = get_node(map, key)
+    if node is not None:
+        return node.value
+    raise ValueError("BST hasn't Node with this key")
 
 
 def has_key(map: Tree, key: Any) -> bool:
-    current_root = map.root
-    while current_root is not None:
-        if key == current_root.key:
-            return True
-        elif key > current_root.key:
-            current_root = current_root.right
-        elif key < current_root.key:
-            current_root = current_root.left
-    return False
+    return get_node(map, key) is not None
 
 
 def get_maximum(map: Tree) -> Any:
@@ -146,7 +145,7 @@ def get_minimum(map: Tree) -> Any:
 
 def get_upper_bound(map: Tree, key: Any) -> Any:
     if get_maximum(map) < key:
-        raise AttributeError
+        raise ValueError("In the map there not key bigger than given")
     current_root = map.root
     upper_bound = current_root.key
     while current_root is not None:
@@ -175,7 +174,7 @@ def find_min_in_right_subtree(root: TreeNode) -> TreeNode:
 
 def remove(map: Tree, key: Any) -> Any:
     if not has_key(map, key):
-        raise AttributeError("BST hasn't Node with this key")
+        raise ValueError("BST hasn't Node with this key")
     deleting_value = get(map, key)
 
     def _remove(current_root: TreeNode, key: Any):
@@ -234,3 +233,13 @@ def traverse(map: Tree, order: str):
         return in_order_traverse(map.root, ans)
     if order == "post-order":
         return post_order_traverse(map.root, ans)
+
+
+bst = create_tree_map()
+put(bst, 20, 0)
+put(bst, 10, 0)
+put(bst, 40, 0)
+put(bst, 30, 0)
+put(bst, 50, 0)
+put(bst, 25, 0)
+print("ab")

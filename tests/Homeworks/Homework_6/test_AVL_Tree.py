@@ -61,7 +61,7 @@ TEST_AVL_TREE = Tree(
 
 
 def test_exception_in_get(key1=212, key2=0):
-    with pytest.raises(AttributeError, match="BST hasn't Node with this key"):
+    with pytest.raises(ValueError, match="BST hasn't Node with this key"):
         get(TEST_AVL_TREE, key1)
         get(TEST_AVL_TREE, key2)
 
@@ -124,19 +124,107 @@ def test_rotate_right():
     assert test_tree == expected
 
 
+def test_big_rotate_right():
+    expected = Tree(
+        root=TreeNode(
+            key=4,
+            value=0,
+            left=TreeNode(
+                key=2,
+                value=0,
+                left=TreeNode(key=1, value=0, left=None, right=None, height=1),
+                right=TreeNode(key=3, value=0, left=None, right=None, height=1),
+                height=2,
+            ),
+            right=TreeNode(
+                key=5,
+                value=0,
+                left=None,
+                right=TreeNode(key=7, value=0, left=None, right=None, height=1),
+                height=2,
+            ),
+            height=3,
+        )
+    )
+    test_tree = Tree(
+        root=TreeNode(
+            key=5,
+            value=0,
+            left=TreeNode(
+                key=2,
+                value=0,
+                left=TreeNode(key=1, value=0, left=None, right=None, height=1),
+                right=TreeNode(
+                    key=4,
+                    value=0,
+                    left=None,
+                    right=None,
+                    height=1,
+                ),
+                height=2,
+            ),
+            right=TreeNode(key=7, value=0, left=None, right=None, height=1),
+            height=3,
+        )
+    )
+    put(test_tree, 3, 0)
+    assert test_tree == expected
+
+
+def test_big_rotate_left():
+    expected = Tree(
+        root=TreeNode(
+            key=30,
+            value=0,
+            left=TreeNode(
+                key=20,
+                value=0,
+                left=TreeNode(key=10, value=0, left=None, right=None, height=1),
+                right=TreeNode(key=25, value=0, left=None, right=None, height=1),
+                height=2,
+            ),
+            right=TreeNode(
+                key=40,
+                value=0,
+                left=None,
+                right=TreeNode(key=50, value=0, left=None, right=None, height=1),
+                height=2,
+            ),
+            height=3,
+        )
+    )
+    test_tree = Tree(
+        root=TreeNode(
+            key=20,
+            value=0,
+            left=TreeNode(key=10, value=0, left=None, right=None, height=1),
+            right=TreeNode(
+                key=40,
+                value=0,
+                left=TreeNode(key=30, value=0, left=None, right=None, height=1),
+                right=TreeNode(key=50, value=0, left=None, right=None, height=1),
+                height=2,
+            ),
+            height=3,
+        )
+    )
+    put(test_tree, 25, 0)
+    assert test_tree == expected
+
+
 def test_exception_in_remove(key1=212, key2=-1):
-    with pytest.raises(AttributeError, match="BST hasn't Node with this key"):
+    with pytest.raises(ValueError, match="BST hasn't Node with this key"):
         remove(TEST_AVL_TREE, key1)
         remove(TEST_AVL_TREE, key2)
 
 
 def test_exception_in_lower_and_upper_bound(key1=212, key2=17):
-    with pytest.raises(AttributeError):
+    with pytest.raises(ValueError, match="In the map there not key bigger than given"):
         get_upper_bound(TEST_AVL_TREE, key1)
         get_lower_bound(TEST_AVL_TREE, key2)
 
 
-def test_create_hash_table():
+def test_create_avl_tree():
     assert type(create_tree_map()) == Tree
 
 
@@ -163,7 +251,40 @@ def test_get(key, expected):
     assert get(TEST_AVL_TREE, key) == expected
 
 
-def test_remove():
+def test_put():
+    bst = create_tree_map()
+    put(bst, 1, 0)
+    put(bst, 2, 0)
+    put(bst, 3, 0)
+    put(bst, 4, 0)
+    put(bst, -4, 0)
+    put(bst, 2.5, 0)
+    assert traverse(bst, "in-order") == [-4, 1, 2, 2.5, 3, 4]
+
+
+def test_general_behavior():
+    new_test_tree = copy.deepcopy(TEST_AVL_TREE)
+    put(new_test_tree, 4.5, "aboba")
+    put(new_test_tree, -13, "aboba")
+    flag1 = (
+        True
+        if traverse(new_test_tree, "pre-order")
+        == [8, 3, 1, -5, -13, 2, 6, 4, 4.5, 7, 11, 9, 13, 15]
+        else False
+    )
+    remove(new_test_tree, 11)
+    remove(new_test_tree, 6)
+    flag2 = (
+        True
+        if traverse(new_test_tree, "pre-order")
+        == [7, 3, 1, -5, -13, 2, 4, 4.5, 9, 8, 13, 15]
+        else False
+    )
+    flag3 = True if has_key(new_test_tree, 6) == False else True
+    assert flag1 and flag2 and flag3
+
+
+def test_remove_example():
     expected = Tree(
         root=TreeNode(
             key=8,

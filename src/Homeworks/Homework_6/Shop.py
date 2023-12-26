@@ -8,6 +8,7 @@ from AVL_Tree import (
     traverse,
     get_lower_bound,
 )
+import argparse
 
 
 def add_size_count(map: Tree, size: int, count: int) -> ():
@@ -40,10 +41,15 @@ def select_size(map: Tree, size: int, file):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--log_file", type=str, default="shop_logs.txt")
+    parser.add_argument("--balance_file", type=str, default="shop_balance_file.txt")
+    parser.add_argument("--result_file", type=str, default="shop_results.txt")
+    args = parser.parse_args()
     map = create_tree_map()
-    shop_result_file = open("shop_results.txt", "w")
-    shop_balance_file = open("shop_balance_file.txt", "w")
-    with open("shop_logs.txt") as f_in:
+    shop_result_file = open(args.result_file, "w")
+    shop_balance_file = open(args.balance_file, "w")
+    with open(args.log_file) as f_in:
         for i, line in enumerate(f_in):
             if i:
                 command = line.split()
