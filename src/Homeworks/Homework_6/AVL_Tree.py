@@ -233,13 +233,3 @@ def traverse(map: Tree, order: str):
         return in_order_traverse(map.root, ans)
     if order == "post-order":
         return post_order_traverse(map.root, ans)
-
-
-bst = create_tree_map()
-put(bst, 20, 0)
-put(bst, 10, 0)
-put(bst, 40, 0)
-put(bst, 30, 0)
-put(bst, 50, 0)
-put(bst, 25, 0)
-print("ab")
