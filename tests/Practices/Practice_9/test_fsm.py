@@ -1,7 +1,11 @@
 import pytest
 from io import StringIO
 
-from src.Practices.Practice_9.fsm import validate_string, create_aboba_fs_machine
+from .fsm import (
+    give_message_about_string,
+    create_aboba_fs_machine,
+    create_float_fs_machine,
+)
 from src.Practices.Practice_9.main import main
 
 FSM_aboba = create_aboba_fs_machine()
