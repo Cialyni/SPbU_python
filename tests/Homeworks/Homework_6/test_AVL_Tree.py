@@ -1,3 +1,5 @@
+import random
+
 import pytest, copy
 from src.Homeworks.Homework_6.AVL_Tree import (
     TreeNode,
@@ -15,6 +17,8 @@ from src.Homeworks.Homework_6.AVL_Tree import (
     rotate_left,
     rotate_right,
     insert,
+    get_node,
+    _balance,
 )
 
 TEST_AVL_TREE = Tree(
@@ -251,15 +255,13 @@ def test_get(key, expected):
     assert get(TEST_AVL_TREE, key) == expected
 
 
-def test_put():
+def test_balance_factor():
     bst = create_tree_map()
-    put(bst, 1, 0)
-    put(bst, 2, 0)
-    put(bst, 3, 0)
-    put(bst, 4, 0)
-    put(bst, -4, 0)
-    put(bst, 2.5, 0)
-    assert traverse(bst, "in-order") == [-4, 1, 2, 2.5, 3, 4]
+    for i in range(10):
+        new_key = random.randint(-100, 100)
+        put(bst, new_key, "value: " + str(new_key))
+        assert has_key(bst, new_key)
+        assert abs(_balance(get_node(bst, new_key))) < 2 and abs(_balance(bst.root)) < 2
 
 
 def test_general_behavior():
