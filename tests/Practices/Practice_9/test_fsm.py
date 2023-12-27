@@ -1,16 +1,11 @@
 import pytest
 from io import StringIO
 
-from src.Practices.Practice_9.fsm import (
-    validate_string,
-    create_aboba_fs_machine,
-    create_float_fs_machine,
-)
+from src.Practices.Practice_9.fsm import validate_string, create_aboba_fs_machine
 from src.Practices.Practice_9.main import main
 
 FSM_aboba = create_aboba_fs_machine()
 FSM_float = create_float_fs_machine()
-
 
 @pytest.mark.parametrize(
     "string, expected",
@@ -32,14 +27,14 @@ def test_validate_string(string, expected):
         validate_string(FSM_float, string) == expected
         or validate_string(FSM_aboba, string) == expected
     )
-
+    
 
 @pytest.mark.parametrize(
     "imitation_input, expected",
     (
-        ("sfse", "This string does not belong to the any of given languages"),
-        ("abbaaaaaabb", "This string belong to the (a|b)*abb"),
-        ("aboba", "This string does not belong to the any of given languages"),
+        ("sfse", "This line does not belong to the (a|b)*abb"),
+        ("abbaaaaaabb", "This line belongs to the (a|b)*abb"),
+        ("aboba", "This line does not belong to the (a|b)*abb"),
     ),
 )
 def test_main(monkeypatch, imitation_input, expected):

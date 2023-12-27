@@ -1,16 +1,15 @@
-from .fsm import (
-    create_fs_machine,
-    give_message_about_string,
-    create_aboba_fs_machine,
-    create_float_fs_machine,
-)
+from .fsm import validate_string, create_aboba_fs_machine
 
 
 def main():
-    line = input("Enter a string to verify that you belong to one of the languages\n")
-    fsm_aboba = create_aboba_fs_machine()
-    fsm_float = create_float_fs_machine()
-    print(give_message_about_string([fsm_aboba, fsm_float], line), end="")
+    string = input(
+        "Enter a string to verify that it belongs to the language: (a|b)*abb\n"
+    )
+    fsm = create_aboba_fs_machine()
+    if validate_string(fsm, string):
+        print("This line belongs to the (a|b)*abb")
+    else:
+        print("This line does not belong to the (a|b)*abb")
 
 
 if __name__ == "__main__":
