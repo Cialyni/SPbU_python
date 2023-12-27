@@ -5,6 +5,7 @@ from src.Practices.Practice_9.fsm import (
     give_message_about_string,
     create_aboba_fs_machine,
     create_float_fs_machine,
+    validate_string,
 )
 from src.Practices.Practice_9.main import main
 
