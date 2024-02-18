@@ -42,4 +42,3 @@ def isValidSudoku(board: List[List[str]]) -> bool:
         return boolean_ans
 
     return _vertical_check() and _horizontal_check() and _square_check()
-
