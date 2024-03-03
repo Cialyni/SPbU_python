@@ -1,5 +1,5 @@
 import pytest
-from src.LeetCode.leet_code_task_1 import nextPermutation
+from src.LeetCode.leet_code_task_1 import next_permutation
 
 
 @pytest.mark.parametrize(
@@ -13,5 +13,5 @@ from src.LeetCode.leet_code_task_1 import nextPermutation
     ),
 )
 def test_solution_next_permutation(nums, expected):
-    actual = nextPermutation(nums)
+    actual = next_permutation(nums)
     assert actual == expected
