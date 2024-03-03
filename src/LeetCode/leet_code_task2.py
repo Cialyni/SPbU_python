@@ -1,5 +1,5 @@
 from typing import List
-import numpy
+from numpy import transpose
 
 
 def _vertical_check(board: List[List[str]]):
@@ -12,7 +12,7 @@ def _vertical_check(board: List[List[str]]):
 
 
 def _horizontal_check(board: List[List[str]]):
-    transpose_board = numpy.transpose(board)
+    transpose_board = transpose(board)
     return _vertical_check(list(transpose_board))
 
 
