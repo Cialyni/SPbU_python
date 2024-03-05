@@ -1,12 +1,6 @@
 from typing import List, Any
 
 
-def transpose(matrix: List[List[Any]]):
-    for i in range(len(matrix)):
-        for j in range(i + 1, len(matrix)):
-            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-
-
 def _vertical_check(board: List[List[str]]):
     for j in range(len(board[0])):
         check_vertical = [board[i][j] for i in range(len(board))]
