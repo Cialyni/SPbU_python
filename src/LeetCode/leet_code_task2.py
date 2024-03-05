@@ -1,5 +1,10 @@
-from typing import List
-from numpy import transpose
+from typing import List, Any
+
+
+def transpose(matrix: List[List[Any]]):
+    for i in range(len(matrix)):
+        for j in range(i + 1, len(matrix)):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
 
 def _vertical_check(board: List[List[str]]):
@@ -12,7 +17,9 @@ def _vertical_check(board: List[List[str]]):
 
 
 def _horizontal_check(board: List[List[str]]):
-    transpose_board = transpose(board)
+    transpose_board = [
+        [board[j][i] for j in range(len(board[i]))] for i in range(len(board))
+    ]
     return _vertical_check(list(transpose_board))
 
 
