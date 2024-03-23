@@ -2,12 +2,12 @@ from typing import List, Tuple
 
 
 def robot_move(
-    current_pos: List[int],
+    current_pos: Tuple[int, int],
     move_orientation: Tuple[int],
     obstacles: Tuple[Tuple[int]],
     k: int,
 ):
-    x, y = current_pos[0], current_pos[1]
+    x, y = current_pos
     for i in range(k):
         x += move_orientation[0]
         y += move_orientation[1]
@@ -16,21 +16,19 @@ def robot_move(
     return x, y
 
 
-def robot_sim(commands: List[int], obstacles: List[List[int]]) -> int:
+def robot_sim(commands: Tuple[int], obstacles: Tuple[Tuple[int]]) -> int:
     ans = 0
-    current_pos = [0, 0]  # x, y
+    current_pos = (0, 0)  # x, y
     move_orientations = ((0, 1), (1, 0), (0, -1), (-1, 0))
-    obstacles = set((a, b) for a, b in obstacles)
+    obstacles = set(obstacles)
     current_orientation_ind = 0
     for command in commands:
         if command == -2:
-            current_orientation_ind = (current_orientation_ind - 1) % len(
-                move_orientations
-            )
+            current_orientation_ind -= 1
+            current_orientation_ind %= len(move_orientations)
         elif command == -1:
-            current_orientation_ind = (current_orientation_ind + 1) % len(
-                move_orientations
-            )
+            current_orientation_ind += 1
+            current_orientation_ind %= len(move_orientations)
         else:
             current_pos = robot_move(
                 current_pos,
