@@ -8,4 +8,3 @@ def smallest_repunit_div_by_k(k: int) -> int:
             return ans
         num = num * 10 + 1
         ans += 1
-
