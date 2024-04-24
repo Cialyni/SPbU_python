@@ -1,5 +1,5 @@
 import pytest
-from src.LeetCode.leet_code7 import smallest_repunit_div_by_k  # type: ignore
+from src.LeetCode.leet_code7 import smallest_repunit_div_by_k
 
 
 @pytest.mark.parametrize(
