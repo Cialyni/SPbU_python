@@ -15,9 +15,8 @@ def longest_univalue_path(root: TreeNode) -> int:
     def _traverse(current_root: TreeNode) -> int:
         if current_root is None or current_root.val is None:
             return 0
-        left_res, right_res = _traverse(current_root.left), _traverse(
-            current_root.right
-        )
+        left_res = _traverse(current_root.left)
+        right_res = _traverse(current_root.right)
         right = (
             right_res + 1
             if current_root.right and current_root.val == current_root.right.val
