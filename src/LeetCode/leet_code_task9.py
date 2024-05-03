@@ -1,5 +1,4 @@
-# Definition for a binary tree node.
-from typing import Optional
+from typing import Tuple
 
 
 class TreeNode:
@@ -10,25 +9,22 @@ class TreeNode:
 
 
 def longest_univalue_path(root: TreeNode) -> int:
-    ans = [0]
 
-    def _traverse(current_root: TreeNode) -> int:
+    def _traverse(current_root: TreeNode) -> Tuple[int, int]:
         if current_root is None or current_root.val is None:
-            return 0
+            return 0, 0
         left_res = _traverse(current_root.left)
         right_res = _traverse(current_root.right)
         right = (
-            right_res + 1
+            right_res[0] + 1
             if current_root.right and current_root.val == current_root.right.val
             else 0
         )
         left = (
-            left_res + 1
+            left_res[0] + 1
             if current_root.left and current_root.val == current_root.left.val
             else 0
         )
-        ans[0] = max(ans[0], left + right)
-        return max(left, right)
+        return max(left, right), max(max(left_res[1], right_res[1]), left + right)
 
-    _traverse(root)
-    return ans[0]
+    return _traverse(root)[1]
